@@ -100,7 +100,21 @@ class AuditTrailSearch extends AuditTrail
                 'options' => ['class' => 'table-responsive no-padding'],
                 'tableOptions' => ['class' => 'table table-hover table-bordered'],
                 'layout' => "<div class='box-body'>{items}</div>",
-                'columns' => ['attr', 'from', 'to'],
+                'columns' => [
+                    'attr',
+                    [
+                        'attribute' => 'from',
+                        'content' => function($data){
+                            return is_array($data['from']) ? Json::encode($data['from']) : $data['from'];
+                        },
+                    ],
+                    [
+                        'attribute' => 'to',
+                        'content' => function($data){
+                            return is_array($data['to']) ? Json::encode($data['to']) : $data['to'];
+                        },
+                    ],
+                ],
             ]);
         }
     }
