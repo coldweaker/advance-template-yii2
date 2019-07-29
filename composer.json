@@ -20,9 +20,10 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "asinfotrack/yii2-audittrail": "^0.8.3",
         "dmstr/yii2-adminlte-asset": "^2.1",
-        "mpdf/mpdf": "*",
+        "mpdf/mpdf": "^8.0.2",
         "yiisoft/yii2-httpclient": "^2.0",
-        "yiisoft/yii2-jui": "^2.0"
+        "yiisoft/yii2-jui": "^2.0",
+        "yii2tech/ar-softdelete": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

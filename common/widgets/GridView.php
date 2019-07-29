@@ -8,13 +8,16 @@ use yii\grid\GridView as BaseGridView;
 /**
  * Extends class GridView
  *
- * @author Hendi Andriansah <coldweaker@gmail.com>
+ * @author Hendi Andriansah <hendi@docotel.com>
  */
 class GridView extends BaseGridView
 {
+    public $showCheckbox = false;
     public $showSerialColumn = true;
     public $dataColumnClass = '\common\widgets\DataColumn';
     public $renderExtendRowContent = [];
+    public $extendRowClass = 'success';
+    public $layout = "<div class='box-body'>{summary}\n<br />{items}</div><div class='box-footer'>{pager}</div>";
 
     /**
      * @inheritdoc
@@ -23,11 +26,22 @@ class GridView extends BaseGridView
     {
         $this->options = ['class' => 'table-responsive no-padding'];
         $this->tableOptions = ['class' => 'table table-hover table-bordered'];
-        $this->layout = "<div class='box-body'>{summary}\n<br />{items}</div><div class='box-footer'>{pager}</div>";
         $this->showOnEmpty = true;
 
         if ($this->showSerialColumn) {
-            array_unshift($this->columns, ['class' => 'yii\grid\SerialColumn', 'header' => \Yii::t('app', 'No')]);
+            array_unshift($this->columns, ['class' => 'yii\grid\SerialColumn', 'header' => \Yii::t('app', 'Serial Number')]);
+        }
+
+        if ($this->showCheckbox) {
+            array_unshift($this->columns, [
+                'class' => 'yii\grid\CheckboxColumn',
+                'header' => Html::checkBox('selection_all', false, [
+                    'class' => 'select-on-check-all',
+                ]),
+                'checkboxOptions' => function ($model, $key, $index, $column) {
+                    return ['checked' => false];
+                },
+            ]);
         }
         parent::init();
     }
@@ -52,7 +66,7 @@ class GridView extends BaseGridView
         if ($this->renderExtendRowContent instanceof \Closure) {
             $test = call_user_func($this->renderExtendRowContent, $model);
             $extendRow = Html::tag('td', $test, [
-                'class' => 'extend-row success', 'id' => "extend-$key", 'colspan' => count($cells)
+                'class' => "extend-row {$this->extendRowClass}", 'id' => "extend-$key", 'colspan' => count($cells)
             ]);
             return Html::tag('tr', implode('', $cells), $options)."\n".
                    Html::tag('tr', $extendRow, []);
